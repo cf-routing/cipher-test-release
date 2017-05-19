@@ -1,3 +1,3 @@
-## ELK Test Release
+## CIPHER Test Release
 
-BOSH release with an errand to test the existence of query strings in elasticsearch.
+BOSH release with an errand to test the configured cipher suites against the router IP and Port.

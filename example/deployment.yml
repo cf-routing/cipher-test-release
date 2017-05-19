@@ -1,0 +1,66 @@
+name: "cipher-test"
+director_uuid: # DIRECTOR UUID GOES HERE
+
+releases:
+- name: cipher-test
+  version: latest
+
+compilation:
+  network: cipher-test
+  reuse_compilation_vms: true
+  workers: 1
+  cloud_properties:
+    instance_type: t2.micro
+
+update:
+  canaries: 1
+  canary_watch_time: 5000-120000
+  max_in_flight: 1
+  serial: false
+  update_watch_time: 5000-120000
+
+networks:
+- name: cipher-test
+  subnets:
+  - cloud_properties:
+      security_groups:
+      - # REPLACE WITH SECURITY GROUP
+      subnet: # REPLACE WITH SUBNET ID
+    dns:
+    - 10.0.0.2
+    gateway: 10.0.200.1
+    range: 10.0.200.0/24
+    reserved:
+    - 10.0.200.2 - 10.0.200.199
+    static:
+    - 10.0.200.200 - 10.0.200.250
+  type: manual
+
+resource_pools:
+- name: errand
+  network: elk-test
+  stemcell:
+    name: bosh-aws-xen-hvm-ubuntu-trusty-go_agent
+    version: latest
+  cloud_properties:
+    availability_zone: us-east-1a
+    instance_type: t2.micro
+
+jobs:
+- name: cipher-test
+  templates:
+    - name: run_cipher_test
+      release: cipher-test
+  lifecycle: errand
+  instances: 1
+  networks:
+  - name: cipher-test
+    static_ips:
+    - 10.0.200.200
+  resource_pool: errand
+
+properties:
+  router:
+    ip: # ROUTER IP
+    port: # ROUTER PORT
+    ciphers: #LIST OF CIPHERS TO VERIFY from OPEN SSL

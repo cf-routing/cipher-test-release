@@ -1,0 +1,32 @@
+#!/bin/bash -l
+
+set -e -x
+
+IP=<%=p('router.ip')%>
+PORT=<%=p('router.port')%>
+CIPHERS=<%=p('router.ciphers')%>
+
+SERVER=${IP}:${PORT}
+
+IFS=':' read -ra CIPHERS <<< "${CIPHERS}"
+
+for cipher in ${CIPHERS[@]}; do
+  echo -n Testing $cipher...
+  result=$(echo -n | openssl s_client -cipher "$cipher" -connect $SERVER 2>&1)
+  if [[ "$result" =~ ":error:" ]] ; then
+    error=$(echo -n $result | cut -d':' -f6)
+    echo NO \($error\)
+    exit 1
+  else
+    if [[ "$result" =~ "Cipher is ${cipher}" || "$result" =~ "Cipher    :" ]] ; then
+      echo YES
+    else
+      echo UNKNOWN RESPONSE
+      echo $result
+      exit 1
+    fi
+  fi
+  sleep 0.1
+done
+
+exit 0

@@ -1,0 +1,15 @@
+---
+name: run_cipher_test
+templates:
+  run.erb: bin/run
+
+packages:
+
+properties:
+  router.ip:
+    description: IP of the gorouter to test
+  router.port:
+    description: port to connect to the gorouter on
+    default: 443
+  router.ciphers:
+    description: list of cipher suites to verify

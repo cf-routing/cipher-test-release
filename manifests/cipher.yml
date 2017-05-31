@@ -1,0 +1,32 @@
+instance_groups:
+- azs:
+  - z1
+  instances: 1
+  jobs:
+  - name: run_cipher_test
+    properties:
+      router:
+        ciphers: ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384
+        ip: 10.0.16.12
+        port: 443
+    release: cipher-test
+  lifecycle: errand
+  name: run-cipher-test
+  networks:
+  - name: default
+  stemcell: trusty
+  vm_type: default
+name: cipher
+releases:
+- name: cipher-test
+  version: latest
+stemcells:
+- alias: trusty
+  os: ubuntu-trusty
+  version: latest
+update:
+  canaries: 1
+  canary_watch_time: 5000-120000
+  max_in_flight: 1
+  serial: false
+  update_watch_time: 5000-120000

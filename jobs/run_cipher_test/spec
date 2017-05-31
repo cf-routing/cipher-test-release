@@ -1,5 +1,6 @@
 ---
 name: run_cipher_test
+
 templates:
   run.erb: bin/run
 

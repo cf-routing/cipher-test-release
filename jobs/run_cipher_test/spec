@@ -13,4 +13,4 @@ properties:
     description: port to connect to the gorouter on
     default: 443
   router.ciphers:
-    description: list of OpenSSL cipher names for TLS 1.2 and lower (colon-separated); TLS 1.3 suites are not tested, and the router must accept TLS 1.2
+    description: list of OpenSSL cipher names for TLS 1.2 and lower (colon-separated); TLS 1.3 suites are not tested, and the router must accept TLS 1.2; each entry must be a single exact OpenSSL cipher name, not an alias or cipher string (e.g. HIGH, ECDHE+AESGCM)

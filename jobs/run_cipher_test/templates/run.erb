@@ -19,7 +19,8 @@ for cipher in ${CIPHERS[@]}; do
     echo NO \($error\)
     exit 1
   else
-    if grep -qxE "New, [^,]+, Cipher is ${cipher}" <<<"$result" ; then
+    negotiated=$(sed -n 's/^New, [^,]*, Cipher is //p' <<<"$result")
+    if [[ "$negotiated" == "$cipher" ]] ; then
       echo YES
     else
       echo UNKNOWN RESPONSE

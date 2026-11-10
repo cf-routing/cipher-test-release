@@ -18,7 +18,7 @@ for cipher in ${CIPHERS[@]}; do
     echo NO \($error\)
     exit 1
   else
-    if [[ "$result" =~ "Cipher is ${cipher}" ]] ; then
+    if grep -qxF "New, TLSv1.2, Cipher is ${cipher}" <<<"$result" ; then
       echo YES
     else
       echo UNKNOWN RESPONSE
